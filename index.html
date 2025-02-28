@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  data-color-mode="auto" data-light-theme="light" data-dark-theme="dark"
+  data-a11y-animated-images="system" data-a11y-link-underlines="true"
+>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Jup Invite Code Giveaway</title>
+  <!-- GitHub-like styling from your voting site -->
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/light-7aa84bb7e11e.css" />
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/dark-f65db3e8d171.css" />
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-93aded0ee8a1.css" />
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/global-8bed0685a4b5.css" />
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/github-15d4b28ab680.css" />
+  <!-- Solana Web3.js for Phantom wallet integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
+  <style>
+    .hidden { display: none; }
+    .ready-btn-ready { background-color: #28a745 !important; } /* Green when ready */
+  </style>
+</head>
+<body class="logged-in env-production page-responsive session-authentication" style="word-wrap: break-word;">
+  <div class="text-center mx-auto m-2" style="width: 630px">
+    <h2 class="f2 text-normal mb-4">Jup Invite Code Giveaway</h2>
+    <div class="auth-form-body mb-4" style="padding: 30px">
+      <!-- Connect Wallet Section -->
+      <div id="connect-section">
+        <button id="connect-btn" class="Button--primary Button--medium Button">Connect Phantom Wallet</button>
+      </div>
+      <!-- Not Eligible Section -->
+      <div id="not-eligible-section" class="hidden">
+        <p>You’re not eligible. Vote here to join: <a href="[voting site URL]">Vote Now</a></p>
+      </div>
+      <!-- Giveaway Section -->
+      <div id="giveaway-section" class="hidden">
+        <button id="ready-btn" class="Button--primary Button--medium Button">Ready</button>
+        <div id="result" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const connectBtn = document.getElementById('connect-btn');
+    const readyBtn = document.getElementById('ready-btn');
+    const resultDiv = document.getElementById('result');
+    let walletAddress;
+
+    // Hardcoded allowlist for demo (replace with your actual list or logic)
+    const allowlist = ['abc123', 'xyz789']; // Example wallet addresses
+
+    // Show specific section
+    function showSection(sectionId) {
+      document.querySelectorAll('div[id$="-section"]').forEach(div => div.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    // Connect Phantom wallet and check eligibility
+    async function connectWallet() {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          await window.solana.connect();
+          walletAddress = window.solana.publicKey.toString();
+          // Simulate allowlist check (replace with actual integration if needed)
+          if (allowlist.includes(walletAddress)) {
+            showSection('giveaway-section');
+            checkReadyStatus();
+          } else {
+            showSection('not-eligible-section');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Error connecting to Phantom wallet');
+        }
+      } else {
+        alert('Please install Phantom wallet');
+      }
+    }
+
+    // Check if user can try again (24-hour cooldown)
+    function checkReadyStatus() {
+      const lastAttempt = localStorage.getItem(`lastAttempt_${walletAddress}`);
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000;
+      if (!lastAttempt || (now - lastAttempt >= oneDay)) {
+        readyBtn.classList.add('ready-btn-ready');
+        readyBtn.disabled = false;
+      } else {
+        readyBtn.classList.remove('ready-btn-ready');
+        readyBtn.disabled = true;
+        resultDiv.innerText = 'You can try again in 24 hours.';
+      }
+    }
+
+    // Handle giveaway attempt
+    function tryLuck() {
+      readyBtn.disabled = true;
+      readyBtn.innerText = 'Checking...';
+      setTimeout(() => {
+        const now = Date.now();
+        localStorage.setItem(`lastAttempt_${walletAddress}`, now);
+        // 1 in 100 chance to win
+        const win = Math.random() < 0.01;
+        if (win) {
+          resultDiv.innerText = 'Congratulations! Your invite code is: JUP-12345';
+        } else {
+          resultDiv.innerText = 'Sorry, no luck this time!';
+        }
+        readyBtn.innerText = 'Ready';
+        checkReadyStatus();
+      }, 1000); // Simulate delay
+    }
+
+    // Event listeners
+    connectBtn.addEventListener('click', connectWallet);
+    readyBtn.addEventListener('click', tryLuck);
+  </script>
+</body>
+</html>

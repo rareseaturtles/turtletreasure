@@ -105,7 +105,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
-        // Firebase config (same as https://diramocracy.netlify.app/)
+        // Firebase config (same as your voting app at https://diramocracy.netlify.app/)
         const firebaseConfig = {
             apiKey: "AIzaSyABc3oR2hxlm_DTE9vsEHufk7BZ6TqeKP0",
             authDomain: "voting-f332e.firebaseapp.com",
@@ -122,14 +122,14 @@
 
         let publicKey = null;
 
-        // Connect Phantom Wallet
+        // Connect to Phantom Wallet
         async function connectWallet() {
             if (window.solana && window.solana.isPhantom) {
                 try {
                     await window.solana.connect();
                     publicKey = window.solana.publicKey.toString();
                     showResult(`Connected: ${publicKey}`);
-                    await checkAllowlist();
+                    await checkEligibility();
                 } catch (error) {
                     if (error.message.includes("User rejected the request")) {
                         showResult("You declined the connection. Please try again.");
@@ -142,12 +142,12 @@
             }
         }
 
-        // Check if user is on allowlist
-        async function checkAllowlist() {
-            const allowlistRef = db.collection("allowlist").doc(publicKey);
-            const allowlistDoc = await allowlistRef.get();
-            if (!allowlistDoc.exists) {
-                showResult(`You are not on the allowlist. Please vote at <a href="https://diramocracy.netlify.app/" target="_blank">https://diramocracy.netlify.app/</a> to join.`);
+        // Check if user is eligible (has voted)
+        async function checkEligibility() {
+            const votesRef = db.collection("votes").doc(publicKey);
+            const votesDoc = await votesRef.get();
+            if (!votesDoc.exists) {
+                showResult(`You are not eligible. Please vote at <a href="https://diramocracy.netlify.app/" target="_blank">https://diramocracy.netlify.app/</a> to participate.`);
                 document.getElementById("try-luck-btn").disabled = true;
             } else {
                 document.getElementById("try-luck-btn").disabled = false;
@@ -155,32 +155,32 @@
             }
         }
 
-        // Try luck function
+        // Try luck function with 24-hour cooldown and 1% chance
         async function tryLuck() {
             if (!publicKey) return showResult("Connect wallet first!");
 
-            const userRef = db.collection("users").doc(publicKey);
-            const userDoc = await userRef.get();
+            const votesRef = db.collection("votes").doc(publicKey);
+            const votesDoc = await votesRef.get();
 
             const now = Date.now();
-            const lastAttempt = userDoc.exists ? userDoc.data().last_attempt : 0;
-            const attemptCount = userDoc.exists ? userDoc.data().attempt_count : 0;
+            const lastAttempt = votesDoc.exists && votesDoc.data().last_attempt ? votesDoc.data().last_attempt : 0;
+            const attemptCount = votesDoc.exists && votesDoc.data().attempt_count ? votesDoc.data().attempt_count : 0;
 
             if (now - lastAttempt < 24 * 60 * 60 * 1000) {
                 return showResult("You can try again in 24 hours.");
             }
 
-            // Update user data
-            await userRef.set({
+            // Update attempt data
+            await votesRef.set({
                 last_attempt: now,
                 attempt_count: attemptCount + 1
             }, { merge: true });
 
-            // Determine if win (1 in 100 chance)
+            // 1% chance to win
             const win = Math.random() < 0.01;
 
             if (win) {
-                const codeRef = db.collection("inviteCodes").where("claimed", "==", false).limit(1);
+                const codeRef = db.collection("InviteCodes").where("claimed", "==", false).limit(1);
                 const codeSnapshot = await codeRef.get();
 
                 if (codeSnapshot.empty) {
@@ -193,15 +193,19 @@
 
                 try {
                     await db.runTransaction(async (transaction) => {
-                        const codeDocRef = db.collection("inviteCodes").doc(codeId);
+                        const codeDocRef = db.collection("InviteCodes").doc(codeId);
                         const codeDoc = await transaction.get(codeDocRef);
 
                         if (!codeDoc.exists || codeDoc.data().claimed) {
                             throw "Code already claimed";
                         }
 
-                        transaction.update(codeDocRef, { claimed: true, claimed_by: publicKey });
+                        transaction.update(codeDocRef, { 
+                            claimed: true, 
+                            claimed_by: publicKey 
+                        });
                     });
+
                     showResult(`Congratulations! Your invite code is: ${codeDoc.data().code}`);
                 } catch (error) {
                     showResult("Failed to claim invite code. Try again.");
@@ -211,7 +215,7 @@
             }
         }
 
-        // Show result message
+        // Display result message
         function showResult(message) {
             document.getElementById("result").innerHTML = message;
         }
@@ -226,7 +230,7 @@
     </div>
 
     <script>
-        // Event listeners
+        // Add event listeners
         document.getElementById("connect-btn").addEventListener("click", connectWallet);
         document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
     </script>

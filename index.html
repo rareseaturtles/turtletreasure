@@ -1,120 +1,234 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  data-color-mode="auto" data-light-theme="light" data-dark-theme="dark"
-  data-a11y-animated-images="system" data-a11y-link-underlines="true"
->
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Jup Invite Code Giveaway</title>
-  <!-- GitHub-like styling from your voting site -->
-  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/light-7aa84bb7e11e.css" />
-  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/dark-f65db3e8d171.css" />
-  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-93aded0ee8a1.css" />
-  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/global-8bed0685a4b5.css" />
-  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/github-15d4b28ab680.css" />
-  <!-- Solana Web3.js for Phantom wallet integration -->
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
-  <style>
-    .hidden { display: none; }
-    .ready-btn-ready { background-color: #28a745 !important; } /* Green when ready */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jup Invite Code Giveaway</title>
+
+    <!-- Open Graph Metadata (for Facebook and Google compatibility) -->
+    <meta property="og:title" content="Jup Invite Code Giveaway" />
+    <meta property="og:description" content="Try your luck to win a Jup invite code! Connect your Phantom wallet and see if you're eligible." />
+    <meta property="og:url" content="https://your-giveaway-site.netlify.app/" /> <!-- Replace with your actual URL -->
+    <meta property="og:image" content="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Metadata (for X) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jup Invite Code Giveaway" />
+    <meta name="twitter:description" content="Try your luck to win a Jup invite code! Connect your Phantom wallet and see if you're eligible." />
+    <meta name="twitter:image" content="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" />
+
+    <!-- Additional Metadata (for Google) -->
+    <meta name="description" content="A chance to win a Jup invite code by connecting your Phantom wallet." />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #333;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px; /* Bigger font */
+            color: #005f73; /* Ocean blue */
+            margin: 20px 0;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            border-radius: 50%;
+            border: 4px solid #005f73;
+            margin: 20px auto;
+            display: block;
+        }
+        .content {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            border: 2px solid #94d2bd; /* Light teal border */
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            padding: 15px 30px;
+            font-size: 20px; /* Bigger font */
+            color: #ffffff;
+            background-color: #005f73; /* Ocean blue */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            background-image: linear-gradient(to bottom, #005f73, #023e58); /* Gradient texture */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+            background-image: linear-gradient(to bottom, #023e58, #001f2e); /* Darker on hover */
+        }
+        .action-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .action-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #result {
+            font-size: 24px;
+            color: #005f73;
+            margin-top: 20px;
+        }
+        a {
+            color: #005f73;
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="logged-in env-production page-responsive session-authentication" style="word-wrap: break-word;">
-  <div class="text-center mx-auto m-2" style="width: 630px">
-    <h2 class="f2 text-normal mb-4">Jup Invite Code Giveaway</h2>
-    <div class="auth-form-body mb-4" style="padding: 30px">
-      <!-- Connect Wallet Section -->
-      <div id="connect-section">
-        <button id="connect-btn" class="Button--primary Button--medium Button">Connect Phantom Wallet</button>
-      </div>
-      <!-- Not Eligible Section -->
-      <div id="not-eligible-section" class="hidden">
-        <p>You’re not eligible. Vote here to join: <a href="[voting site URL]">Vote Now</a></p>
-      </div>
-      <!-- Giveaway Section -->
-      <div id="giveaway-section" class="hidden">
-        <button id="ready-btn" class="Button--primary Button--medium Button">Ready</button>
-        <div id="result" class="mt-4"></div>
-      </div>
+<body>
+    <img class="logo" src="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" alt="Turtle Logo">
+    <h1>Jup Invite Code Giveaway</h1>
+
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.57.0/dist/index.iife.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        // Firebase config (same as https://diramocracy.netlify.app/)
+        const firebaseConfig = {
+            apiKey: "AIzaSyABc3oR2hxlm_DTE9vsEHufk7BZ6TqeKP0",
+            authDomain: "voting-f332e.firebaseapp.com",
+            projectId: "voting-f332e",
+            storageBucket: "voting-f332e.firebasestorage.app",
+            messagingSenderId: "551078651014",
+            appId: "1:551078651014:web:86646146a581b8dc3edd07",
+            measurementId: "G-WYLGQ9B7KC"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let publicKey = null;
+
+        // Connect Phantom Wallet
+        async function connectWallet() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    await window.solana.connect();
+                    publicKey = window.solana.publicKey.toString();
+                    showResult(`Connected: ${publicKey}`);
+                    await checkAllowlist();
+                } catch (error) {
+                    if (error.message.includes("User rejected the request")) {
+                        showResult("You declined the connection. Please try again.");
+                    } else {
+                        showResult("An error occurred. Please try again.");
+                    }
+                }
+            } else {
+                showResult("Phantom Wallet not detected. Please install it from <a href='https://phantom.app/' target='_blank'>phantom.app</a>.");
+            }
+        }
+
+        // Check if user is on allowlist
+        async function checkAllowlist() {
+            const allowlistRef = db.collection("allowlist").doc(publicKey);
+            const allowlistDoc = await allowlistRef.get();
+            if (!allowlistDoc.exists) {
+                showResult(`You are not on the allowlist. Please vote at <a href="https://diramocracy.netlify.app/" target="_blank">https://diramocracy.netlify.app/</a> to join.`);
+                document.getElementById("try-luck-btn").disabled = true;
+            } else {
+                document.getElementById("try-luck-btn").disabled = false;
+                showResult("You’re eligible! Click 'Try Luck' to win an invite code.");
+            }
+        }
+
+        // Try luck function
+        async function tryLuck() {
+            if (!publicKey) return showResult("Connect wallet first!");
+
+            const userRef = db.collection("users").doc(publicKey);
+            const userDoc = await userRef.get();
+
+            const now = Date.now();
+            const lastAttempt = userDoc.exists ? userDoc.data().last_attempt : 0;
+            const attemptCount = userDoc.exists ? userDoc.data().attempt_count : 0;
+
+            if (now - lastAttempt < 24 * 60 * 60 * 1000) {
+                return showResult("You can try again in 24 hours.");
+            }
+
+            // Update user data
+            await userRef.set({
+                last_attempt: now,
+                attempt_count: attemptCount + 1
+            }, { merge: true });
+
+            // Determine if win (1 in 100 chance)
+            const win = Math.random() < 0.01;
+
+            if (win) {
+                const codeRef = db.collection("inviteCodes").where("claimed", "==", false).limit(1);
+                const codeSnapshot = await codeRef.get();
+
+                if (codeSnapshot.empty) {
+                    showResult("No more invite codes available.");
+                    return;
+                }
+
+                const codeDoc = codeSnapshot.docs[0];
+                const codeId = codeDoc.id;
+
+                try {
+                    await db.runTransaction(async (transaction) => {
+                        const codeDocRef = db.collection("inviteCodes").doc(codeId);
+                        const codeDoc = await transaction.get(codeDocRef);
+
+                        if (!codeDoc.exists || codeDoc.data().claimed) {
+                            throw "Code already claimed";
+                        }
+
+                        transaction.update(codeDocRef, { claimed: true, claimed_by: publicKey });
+                    });
+                    showResult(`Congratulations! Your invite code is: ${codeDoc.data().code}`);
+                } catch (error) {
+                    showResult("Failed to claim invite code. Try again.");
+                }
+            } else {
+                showResult("Better luck next time!");
+            }
+        }
+
+        // Show result message
+        function showResult(message) {
+            document.getElementById("result").innerHTML = message;
+        }
+    </script>
+
+    <div class="content">
+        <div class="buttons">
+            <button class="action-btn" id="connect-btn">Connect Wallet</button>
+            <button class="action-btn" id="try-luck-btn" disabled>Try Luck</button>
+        </div>
+        <div id="result"></div>
     </div>
-  </div>
 
-  <script>
-    const connectBtn = document.getElementById('connect-btn');
-    const readyBtn = document.getElementById('ready-btn');
-    const resultDiv = document.getElementById('result');
-    let walletAddress;
-
-    // Hardcoded allowlist for demo (replace with your actual list or logic)
-    const allowlist = ['abc123', 'xyz789']; // Example wallet addresses
-
-    // Show specific section
-    function showSection(sectionId) {
-      document.querySelectorAll('div[id$="-section"]').forEach(div => div.classList.add('hidden'));
-      document.getElementById(sectionId).classList.remove('hidden');
-    }
-
-    // Connect Phantom wallet and check eligibility
-    async function connectWallet() {
-      if (window.solana && window.solana.isPhantom) {
-        try {
-          await window.solana.connect();
-          walletAddress = window.solana.publicKey.toString();
-          // Simulate allowlist check (replace with actual integration if needed)
-          if (allowlist.includes(walletAddress)) {
-            showSection('giveaway-section');
-            checkReadyStatus();
-          } else {
-            showSection('not-eligible-section');
-          }
-        } catch (error) {
-          console.error(error);
-          alert('Error connecting to Phantom wallet');
-        }
-      } else {
-        alert('Please install Phantom wallet');
-      }
-    }
-
-    // Check if user can try again (24-hour cooldown)
-    function checkReadyStatus() {
-      const lastAttempt = localStorage.getItem(`lastAttempt_${walletAddress}`);
-      const now = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000;
-      if (!lastAttempt || (now - lastAttempt >= oneDay)) {
-        readyBtn.classList.add('ready-btn-ready');
-        readyBtn.disabled = false;
-      } else {
-        readyBtn.classList.remove('ready-btn-ready');
-        readyBtn.disabled = true;
-        resultDiv.innerText = 'You can try again in 24 hours.';
-      }
-    }
-
-    // Handle giveaway attempt
-    function tryLuck() {
-      readyBtn.disabled = true;
-      readyBtn.innerText = 'Checking...';
-      setTimeout(() => {
-        const now = Date.now();
-        localStorage.setItem(`lastAttempt_${walletAddress}`, now);
-        // 1 in 100 chance to win
-        const win = Math.random() < 0.01;
-        if (win) {
-          resultDiv.innerText = 'Congratulations! Your invite code is: JUP-12345';
-        } else {
-          resultDiv.innerText = 'Sorry, no luck this time!';
-        }
-        readyBtn.innerText = 'Ready';
-        checkReadyStatus();
-      }, 1000); // Simulate delay
-    }
-
-    // Event listeners
-    connectBtn.addEventListener('click', connectWallet);
-    readyBtn.addEventListener('click', tryLuck);
-  </script>
+    <script>
+        // Event listeners
+        document.getElementById("connect-btn").addEventListener("click", connectWallet);
+        document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
+    </script>
 </body>
 </html>

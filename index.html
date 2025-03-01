@@ -3,109 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptodira friend's Giveaway</title>
+    <title>Cryptodira Friend's Crypto Giveaway</title>
 
-    <!-- Open Graph Metadata (for Facebook and Google compatibility) -->
-    <meta property="og:title" content="Cryptodira friend's Giveaway" />
-    <meta property="og:description" content="Try your luck to win! Connect your Phantom wallet and see if you're eligible." />
-    <meta property="og:url" content="https://turtletreasure.netlify.app/" /> <!-- Replace with your actual URL -->
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Cryptodira Friend's Crypto Giveaway" />
+    <meta property="og:description" content="Try your luck to win crypto rewards! Connect your Phantom wallet and see if you're eligible." />
+    <meta property="og:url" content="https://turtletreasure.netlify.app/" />
     <meta property="og:image" content="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card Metadata (for X) -->
+    <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cryptodira friend's Giveaway" />
-    <meta name="twitter:description" content="Try your luck to win a Jup invite code! Connect your Phantom wallet and see if you're eligible." />
+    <meta name="twitter:title" content="Cryptodira Friend's Crypto Giveaway" />
+    <meta name="twitter:description" content="Try your luck to win crypto rewards! Connect your Phantom wallet and see if you're eligible." />
     <meta name="twitter:image" content="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" />
 
-    <!-- Additional Metadata (for Google) -->
-    <meta name="description" content="A chance to win. free to play" />
+    <!-- Additional Metadata -->
+    <meta name="description" content="A chance to win crypto rewards - free to play!" />
 
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff; /* Light blue background */
+            background: linear-gradient(135deg, #f0f8ff, #b2e2f2); /* Gradient background */
             color: #333;
             text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         h1 {
-            font-size: 48px; /* Bigger font */
-            color: #005f73; /* Ocean blue */
+            font-size: 52px;
+            color: #005f73;
             margin: 20px 0;
             font-family: 'Trebuchet MS', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 95, 115, 0.2);
         }
         .logo {
-            width: 150px;
+            width: 160px;
             height: auto;
             border-radius: 50%;
-            border: 4px solid #005f73;
+            border: 5px solid #005f73;
             margin: 20px auto;
-            display: block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+        }
+        .logo:hover {
+            transform: scale(1.05);
         }
         .content {
-            background-color: #ffffff;
-            padding: 30px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            border: 2px solid #94d2bd; /* Light teal border */
+            background: #fff;
+            padding: 40px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            border: 3px solid #94d2bd;
         }
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 25px;
+            margin-top: 25px;
             flex-wrap: wrap;
         }
         .action-btn {
-            padding: 15px 30px;
-            font-size: 20px; /* Bigger font */
-            color: #ffffff;
-            background-color: #005f73; /* Ocean blue */
+            padding: 16px 35px;
+            font-size: 22px;
+            color: #fff;
+            background: linear-gradient(135deg, #005f73, #023e58);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            background-image: linear-gradient(to bottom, #005f73, #023e58); /* Gradient texture */
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-            background-image: linear-gradient(to bottom, #023e58, #001f2e); /* Darker on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #023e58, #001f2e);
         }
         .action-btn:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateY(2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
         .action-btn:disabled {
-            background-color: #cccccc;
+            background: #ccc;
             cursor: not-allowed;
             box-shadow: none;
         }
         #result {
-            font-size: 24px;
+            font-size: 26px;
             color: #005f73;
-            margin-top: 20px;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        #result.success {
+            background: linear-gradient(135deg, #d4f1d4, #a3e4a3);
+            color: #2d6a2d;
+        }
+        #result.error {
+            background: linear-gradient(135deg, #f8d7d7, #f1a3a3);
+            color: #6a2d2d;
+        }
+        .countdown {
+            font-size: 20px;
+            color: #023e58;
+            margin-top: 15px;
+            font-weight: bold;
         }
         a {
             color: #005f73;
             text-decoration: underline;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #023e58;
         }
     </style>
 </head>
 <body>
     <img class="logo" src="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" alt="Turtle Logo">
-    <h1>Cryptodira Friend's Giveaway</h1>
+    <h1>Cryptodira Friend's Crypto Giveaway</h1>
 
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.57.0/dist/index.iife.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
-        // Firebase config (same as your voting app at https://diramocracy.netlify.app/)
         const firebaseConfig = {
             apiKey: "AIzaSyABc3oR2hxlm_DTE9vsEHufk7BZ6TqeKP0",
             authDomain: "voting-f332e.firebaseapp.com",
@@ -116,48 +149,46 @@
             measurementId: "G-WYLGQ9B7KC"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let publicKey = null;
+        let countdownInterval = null;
 
-        // Connect to Phantom Wallet
         async function connectWallet() {
             if (window.solana && window.solana.isPhantom) {
                 try {
                     await window.solana.connect();
                     publicKey = window.solana.publicKey.toString();
-                    showResult(`Connected: ${publicKey}`);
+                    showResult(`Connected: ${publicKey}`, "success");
                     await checkEligibility();
                 } catch (error) {
                     if (error.message.includes("User rejected the request")) {
-                        showResult("You declined the connection. Please try again.");
+                        showResult("You declined the connection. Please try again.", "error");
                     } else {
-                        showResult("An error occurred. Please try again.");
+                        showResult("An error occurred. Please try again.", "error");
                     }
                 }
             } else {
-                showResult("Phantom Wallet not detected. Please install it from <a href='https://phantom.app/' target='_blank'>phantom.app</a>.");
+                showResult("Phantom Wallet not detected. Get it at <a href='https://phantom.app/' target='_blank'>phantom.app</a>.", "error");
             }
         }
 
-        // Check if user is eligible (has voted)
         async function checkEligibility() {
             const votesRef = db.collection("votes").doc(publicKey);
             const votesDoc = await votesRef.get();
             if (!votesDoc.exists) {
-                showResult(`You are not eligible. Please vote at <a href="https://diramocracy.netlify.app/" target="_blank">https://diramocracy.netlify.app/</a> to participate.`);
+                showResult(`Not eligible yet. Vote at <a href="https://diramocracy.netlify.app/" target="_blank">diramocracy.netlify.app</a> to join!`, "error");
                 document.getElementById("try-luck-btn").disabled = true;
             } else {
                 document.getElementById("try-luck-btn").disabled = false;
-                showResult("You’re eligible! Click 'Try Luck' to win an invite code.");
+                showResult("You’re eligible! Hit 'Try Luck' for a chance at crypto rewards!", "success");
+                updateCountdown(votesDoc.data().last_attempt);
             }
         }
 
-        // Try luck function with 24-hour cooldown and 1% chance
         async function tryLuck() {
-            if (!publicKey) return showResult("Connect wallet first!");
+            if (!publicKey) return showResult("Connect your wallet first!", "error");
 
             const votesRef = db.collection("votes").doc(publicKey);
             const votesDoc = await votesRef.get();
@@ -167,16 +198,16 @@
             const attemptCount = votesDoc.exists && votesDoc.data().attempt_count ? votesDoc.data().attempt_count : 0;
 
             if (now - lastAttempt < 24 * 60 * 60 * 1000) {
-                return showResult("You can try again in 24 hours.");
+                showResult("Hold tight! You can try again soon.", "error");
+                updateCountdown(lastAttempt);
+                return;
             }
 
-            // Update attempt data
             await votesRef.set({
                 last_attempt: now,
                 attempt_count: attemptCount + 1
             }, { merge: true });
 
-            // 1% chance to win
             const win = Math.random() < 0.01;
 
             if (win) {
@@ -184,7 +215,7 @@
                 const codeSnapshot = await codeRef.get();
 
                 if (codeSnapshot.empty) {
-                    showResult("No more invite codes available.");
+                    showResult("No more rewards available right now.", "error");
                     return;
                 }
 
@@ -197,7 +228,7 @@
                         const codeDoc = await transaction.get(codeDocRef);
 
                         if (!codeDoc.exists || codeDoc.data().claimed) {
-                            throw "Code already claimed";
+                            throw "Reward already claimed";
                         }
 
                         transaction.update(codeDocRef, { 
@@ -206,19 +237,52 @@
                         });
                     });
 
-                    showResult(`Congratulations! Your invite code is: ${codeDoc.data().code}`);
+                    showResult(`You won! Your crypto reward code is: ${codeDoc.data().code}`, "success");
                 } catch (error) {
-                    showResult("Failed to claim invite code. Try again.");
+                    showResult("Failed to claim your reward. Try again!", "error");
                 }
             } else {
-                showResult("Better luck next time!");
+                showResult("No luck this time—try again in 24 hours!", "error");
+                updateCountdown(now);
             }
         }
 
-        // Display result message
-        function showResult(message) {
-            document.getElementById("result").innerHTML = message;
+        function showResult(message, type = "") {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = message;
+            resultDiv.className = "result"; // Reset classes
+            if (type) resultDiv.classList.add(type);
         }
+
+        function updateCountdown(lastAttempt) {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            const now = Date.now();
+            const timeLeft = (lastAttempt + 24 * 60 * 60 * 1000) - now;
+
+            if (timeLeft <= 0) {
+                document.getElementById("countdown").textContent = "";
+                return;
+            }
+
+            countdownInterval = setInterval(() => {
+                const timeLeftNow = (lastAttempt + 24 * 60 * 60 * 1000) - Date.now();
+                if (timeLeftNow <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").textContent = "You can try again now!";
+                    document.getElementById("try-luck-btn").disabled = false;
+                    return;
+                }
+
+                const hours = Math.floor(timeLeftNow / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeftNow % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeftNow % (1000 * 60)) / 1000);
+                document.getElementById("countdown").textContent = `Next try in: ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        document.getElementById("connect-btn").addEventListener("click", connectWallet);
+        document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
     </script>
 
     <div class="content">
@@ -227,12 +291,7 @@
             <button class="action-btn" id="try-luck-btn" disabled>Try Luck</button>
         </div>
         <div id="result"></div>
+        <div id="countdown" class="countdown"></div>
     </div>
-
-    <script>
-        // Add event listeners
-        document.getElementById("connect-btn").addEventListener("click", connectWallet);
-        document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
-    </script>
 </body>
 </html>

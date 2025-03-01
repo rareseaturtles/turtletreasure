@@ -26,7 +26,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f0f8ff, #b2e2f2); /* Gradient background */
+            background: linear-gradient(135deg, #f0f8ff, #b2e2f2);
             color: #333;
             text-align: center;
             min-height: 100vh;
@@ -104,8 +104,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
         }
         #result.success {
             background: linear-gradient(135deg, #d4f1d4, #a3e4a3);
@@ -135,10 +133,20 @@
     <img class="logo" src="https://www.arweave.net/0UBZmi9VNO_QN7lem_KJ_grHzSIMyWgHjYdK2oUds6k?ext=jpg" alt="Turtle Logo">
     <h1>Cryptodira Friend's Crypto Giveaway</h1>
 
+    <div class="content">
+        <div class="buttons">
+            <button class="action-btn" id="connect-btn">Connect Wallet</button>
+            <button class="action-btn" id="try-luck-btn" disabled>Try Luck</button>
+        </div>
+        <div id="result"></div>
+        <div id="countdown" class="countdown"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.57.0/dist/index.iife.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
+        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyABc3oR2hxlm_DTE9vsEHufk7BZ6TqeKP0",
             authDomain: "voting-f332e.firebaseapp.com",
@@ -149,12 +157,14 @@
             measurementId: "G-WYLGQ9B7KC"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let publicKey = null;
         let countdownInterval = null;
 
+        // Connect to Phantom Wallet
         async function connectWallet() {
             if (window.solana && window.solana.isPhantom) {
                 try {
@@ -174,6 +184,7 @@
             }
         }
 
+        // Check eligibility
         async function checkEligibility() {
             const votesRef = db.collection("votes").doc(publicKey);
             const votesDoc = await votesRef.get();
@@ -187,6 +198,7 @@
             }
         }
 
+        // Try luck function
         async function tryLuck() {
             if (!publicKey) return showResult("Connect your wallet first!", "error");
 
@@ -247,6 +259,7 @@
             }
         }
 
+        // Display result message
         function showResult(message, type = "") {
             const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = message;
@@ -254,6 +267,7 @@
             if (type) resultDiv.classList.add(type);
         }
 
+        // Update countdown timer
         function updateCountdown(lastAttempt) {
             if (countdownInterval) clearInterval(countdownInterval);
 
@@ -262,6 +276,7 @@
 
             if (timeLeft <= 0) {
                 document.getElementById("countdown").textContent = "";
+                document.getElementById("try-luck-btn").disabled = false;
                 return;
             }
 
@@ -281,17 +296,11 @@
             }, 1000);
         }
 
-        document.getElementById("connect-btn").addEventListener("click", connectWallet);
-        document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
+        // Add event listeners after DOM is loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("connect-btn").addEventListener("click", connectWallet);
+            document.getElementById("try-luck-btn").addEventListener("click", tryLuck);
+        });
     </script>
-
-    <div class="content">
-        <div class="buttons">
-            <button class="action-btn" id="connect-btn">Connect Wallet</button>
-            <button class="action-btn" id="try-luck-btn" disabled>Try Luck</button>
-        </div>
-        <div id="result"></div>
-        <div id="countdown" class="countdown"></div>
-    </div>
 </body>
 </html>
